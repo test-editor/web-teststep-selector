@@ -13,7 +13,6 @@ import { TestStepService } from './modules/test-step-service/test-step.service';
   imports: [
     BrowserModule
   ],
-  providers: [TestStepService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
