@@ -1,0 +1,47 @@
+dist: trusty
+sudo: false
+language: node_js
+node_js:
+- '9'
+os:
+- linux
+cache: yarn
+env:
+- FIREFOX_VERSION="latest"
+- FIREFOX_VERSION="59.0.2"
+before_install:
+- echo $FIREFOX_VERSION
+- export FIREFOX_SOURCE_URL='https://download.mozilla.org/?product=firefox-'$FIREFOX_VERSION'&lang=en-US&os=linux64'
+- wget --no-verbose -O /tmp/firefox-$FIREFOX_VERSION.tar.bz2 $FIREFOX_SOURCE_URL
+- mkdir /tmp/firefox-$FIREFOX_VERSION
+- tar -xvf /tmp/firefox-$FIREFOX_VERSION.tar.bz2 -C /tmp/firefox-$FIREFOX_VERSION
+- export PATH=/tmp/firefox-$FIREFOX_VERSION/firefox:$PATH
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- export CHROME_BIN=/usr/bin/google-chrome
+- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.6.0
+- export PATH="$HOME/.yarn/bin:$PATH"
+- sudo apt-get update
+- sudo apt-get install -y libappindicator1 fonts-liberation google-chrome-stable
+install:
+- yarn install
+script:
+- firefox --version
+- npm run lint
+- npm run test:once
+- npm run e2e
+after_success:
+- npm run packagr
+before_deploy:
+- touch .npmignore
+- cd dist/
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: service.eng@akquinet.de
+  api_key:
+    secure: xXQMU38I+rtbYDjRYWEIVmRkseoqzKG1U5muMxApEsXbGIaiLMP+Byl/H/Zwy09l/QLaEn4U9F6wZ+AiGMI6S+ziZEKdcQvx+W8WoZ1+1uvPzncNuG5myAHx2T+mzX1S18q3fyW5gLlfVvpcEoYgy7r9qIMRK0GNCIzLRkolfeYYFn44J4zjw8T7TnR/MvcDwCFkNAdVRU3aNtSNW05DoqKKgerS3B+fy7ITb8zxgf584ETySijUfuxbArPw9n77Q7+Y1ZOPzyY+R293cndEp1PlwIQzkY0z41YPAt+UN/lffkY5aFzDeFltb0R6rpA5n0qRwz5aAir5ryDIfljdXFWnBEe8JFD+9EK3JIqV2G3xyFFv/UVqg5vLnnQDn6+DwtcXghDj1rpv4VPkwDyo5fh7LuOFIk1BnJgRdFd+K935Eb8MSuKZzyv59yWmS/Z/khndZjsHNIhEy+R/KkbyWNFNfI29+XpTsSK2C0NMFr6e+zywNy5YC+vyOwvgdOdnL4/57NyBeu/HfYrHkbKZoUEavj0nbDo97lKnQrNL6GPG8MVvW/rqUg9d5YwrWmDgu2/QCXJ1Vp20yArcqHp4QQfBqfxh9oTigJG+K6lwZjTajKJiYMooWYYfBo47gKfTgNx/jggRyZEmKsDzpO5HyrYbb3p6u+vLQQHzFD7FVAo=
+  on:
+    condition: "$FIREFOX_VERSION = latest"
+    tags: true
+    repo: test-editor/web-teststep-selector
