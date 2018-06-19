@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export enum TestStepType {
+export enum TestStepNodeType {
   ROOT = 'root',
   NAMESPACE = 'namespace',
   COMPONENT = 'component',
@@ -11,12 +11,12 @@ export enum TestStepType {
 }
 export interface TestStepNode {
   displayName: string;
-  type: TestStepType;
+  type: TestStepNodeType;
   children: TestStepNode[];
 }
 
 export abstract class TestStepService {
-  abstract async getTestSteps(): Promise<TestStepType>;
+  abstract async getTestSteps(): Promise<TestStepNode>;
 }
 
 @Injectable()
@@ -24,7 +24,7 @@ export class DefaultTestStepService implements TestStepService {
 
   constructor() { }
 
-  async getTestSteps(): Promise<TestStepType> {
+  async getTestSteps(): Promise<TestStepNode> {
     throw new Error('Method not implemented.');
   }
 }
