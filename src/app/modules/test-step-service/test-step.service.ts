@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpProviderService } from '../http-provider-service/http-provider.service';
-import { HttpClient } from 'selenium-webdriver/http';
 import { TestStepServiceConfig } from './test-step-service-config';
 
 export enum TestStepNodeType {

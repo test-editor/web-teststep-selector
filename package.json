@@ -1,15 +1,40 @@
 {
   "name": "teststep-selector",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "EPL",
+  "keywords": [
+    "test-editor",
+    "angular",
+    "test-step-selection"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/test-editor/web-teststep-selector"
+  },
+  "contributors": [
+    "Jan Jelschen",
+    "Gunther Bachmann"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 6.9.0",
+    "npm": ">= 3.0.0"
+  },
   "scripts": {
+    "clean": "rimraf out-tsc dist/*",
+    "prebuild": "npm run clean",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
     "test:once": "ng test --single-run",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "pree2e": "webdriver-manager update --ignore_ssl --gecko=false",
+    "e2e": "ng e2e",
+    "packagr": "ng-packagr -p ng-package.json",
+    "postversion": "git push && git push --tags"
   },
   "peerDependencies": {
     "@angular/animations": "^5.2.0",

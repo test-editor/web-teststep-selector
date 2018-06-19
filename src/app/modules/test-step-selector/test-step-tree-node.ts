@@ -5,6 +5,7 @@ export class TestStepTreeNode implements TreeNode {
 
   private _children: TestStepTreeNode[];
   hover: string;
+  expanded = true;
 
   constructor(private testStepTree: TestStepNode) {
     this.hover = `Type: ${firstToUpper(splitCamelCase(this.testStepTree.type))}`;
@@ -26,6 +27,23 @@ export class TestStepTreeNode implements TreeNode {
     return this._children;
   }
 
+}
+
+export function testStepNode2TreeNode(testStepTree: TestStepNode): TreeNode {
+  return {
+    name: testStepTree.displayName,
+    hover: `Type: ${firstToUpper(splitCamelCase(testStepTree.type))}`,
+    children: mapTestStepNodes(testStepTree.children),
+    expanded: true
+  };
+}
+
+function mapTestStepNodes(testStepNodes: TestStepNode[]): TreeNode[] {
+  if (testStepNodes) {
+    return testStepNodes.map((testStep) => testStepNode2TreeNode(testStep));
+  } else {
+    return [];
+  }
 }
 
 function firstToUpper(string: string): string {

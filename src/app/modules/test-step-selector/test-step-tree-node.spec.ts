@@ -1,25 +1,25 @@
-import { TestStepNode, TestStepType } from '../test-step-service/test-step.service';
+import { TestStepNode, TestStepNodeType } from '../test-step-service/test-step.service';
 import { TestStepTreeNode } from './test-step-tree-node';
 
 describe('TestStepTreeNode', () => {
 
   it('can be created', () => {
     // given
-    const testStepTree: TestStepNode = { displayName: 'root', type: TestStepType.ROOT, children: [
-      { displayName: 'org.testeditor', type: TestStepType.NAMESPACE, children: [
-        { displayName: 'DummyComponent', type: TestStepType.COMPONENT, children: [
-          { displayName: 'some interaction', type: TestStepType.INTERACTION, children: [] },
-          { displayName: 'Button', type: TestStepType.ELEMENT, children: [
-            { displayName: 'click <Button>', type: TestStepType.INTERACTION, children: [] }
+    const testStepTree: TestStepNode = { displayName: 'root', type: TestStepNodeType.ROOT, children: [
+      { displayName: 'org.testeditor', type: TestStepNodeType.NAMESPACE, children: [
+        { displayName: 'DummyComponent', type: TestStepNodeType.COMPONENT, children: [
+          { displayName: 'some interaction', type: TestStepNodeType.INTERACTION, children: [] },
+          { displayName: 'Button', type: TestStepNodeType.ELEMENT, children: [
+            { displayName: 'click <Button>', type: TestStepNodeType.INTERACTION, children: [] }
           ]}
         ]}
       ]},
-      { displayName: 'com.example', type: TestStepType.NAMESPACE, children: [
-        { displayName: 'MyMacros', type: TestStepType.MACRO_COLLECTION, children: [
-          { displayName: 'my first macro "param"', type: TestStepType.MACRO, children: []}
+      { displayName: 'com.example', type: TestStepNodeType.NAMESPACE, children: [
+        { displayName: 'MyMacros', type: TestStepNodeType.MACRO_COLLECTION, children: [
+          { displayName: 'my first macro "param"', type: TestStepNodeType.MACRO, children: []}
         ]}
       ]},
-      { displayName: './.', type: TestStepType.NAMESPACE, children: null }
+      { displayName: './.', type: TestStepNodeType.NAMESPACE, children: null }
     ]};
 
     // when
