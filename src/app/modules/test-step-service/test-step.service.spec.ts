@@ -47,7 +47,7 @@ describe('TestStepService', () => {
       // given
       const testStepRequest = {
         method: 'GET',
-        url: serviceConfig.testStepServiceUrl
+        url: serviceConfig.testStepServiceUrl + '/step-tree'
       };
       const mockResponse = { displayName: 'root', type: 'root', children: [] };
 
@@ -58,7 +58,9 @@ describe('TestStepService', () => {
         .then((rootNode) =>
               expect(rootNode).toEqual({ displayName: 'root', type: TestStepNodeType.ROOT, children: [ ] }));
 
-      httpMock.match(testStepRequest)[0].flush(mockResponse);
+      tick();
+      const actualRequest = httpMock.expectOne(testStepRequest);
+      actualRequest.flush(mockResponse);
     })));
 
   it('should transform nontrivial tree from json', fakeAsync(inject([HttpTestingController, TestStepService],
@@ -66,7 +68,7 @@ describe('TestStepService', () => {
       // given
       const testStepRequest = {
         method: 'GET',
-        url: serviceConfig.testStepServiceUrl
+        url: serviceConfig.testStepServiceUrl + '/step-tree'
       };
       const mockResponse = {
         displayName: 'root', type: 'root',
@@ -116,7 +118,9 @@ describe('TestStepService', () => {
           expect(rootNode.children[2].type).toEqual(TestStepNodeType.NAMESPACE);
         });
 
-      httpMock.match(testStepRequest)[0].flush(mockResponse);
+      tick();
+      const actualRequest = httpMock.expectOne(testStepRequest);
+      actualRequest.flush(mockResponse);
       tick();
       expect(thenExpectionsExecuted).toBeTruthy();
 

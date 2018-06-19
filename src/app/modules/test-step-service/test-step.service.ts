@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpProviderService } from '../http-provider-service/http-provider.service';
+import { HttpClient } from 'selenium-webdriver/http';
+import { TestStepServiceConfig } from './test-step-service-config';
 
 export enum TestStepNodeType {
   ROOT = 'root',
@@ -20,11 +23,16 @@ export abstract class TestStepService {
 }
 
 @Injectable()
-export class DefaultTestStepService implements TestStepService {
+export class DefaultTestStepService extends TestStepService {
+  private static readonly URL_SUFFIX = '/step-tree';
 
-  constructor() { }
+  constructor(private config: TestStepServiceConfig, private httpProvider: HttpProviderService) {
+    super();
+  }
 
   async getTestSteps(): Promise<TestStepNode> {
-    throw new Error('Method not implemented.');
+    const client = await this.httpProvider.getHttpClient();
+    console.log('URL is ' + this.config.testStepServiceUrl);
+    return await client.get<TestStepNode>(this.config.testStepServiceUrl + DefaultTestStepService.URL_SUFFIX).toPromise();
   }
 }
