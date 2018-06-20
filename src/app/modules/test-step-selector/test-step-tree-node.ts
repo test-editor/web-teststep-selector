@@ -6,6 +6,9 @@ export class TestStepTreeNode implements TreeNode {
   private _children: TestStepTreeNode[];
   hover: string;
   expanded = true;
+  collapsedCssClasses = 'category fas fa-caret-right';
+  expandedCssClasses = 'category fas fa-caret-down';
+  leafCssClasses = 'fas fa-square';
 
   constructor(private testStepTree: TestStepNode) {
     this.hover = `Type: ${firstToUpper(splitCamelCase(this.testStepTree.type))}`;
