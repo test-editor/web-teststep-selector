@@ -1,17 +1,22 @@
 import { TreeNode } from '@testeditor/testeditor-commons';
-import { TestStepNode } from '../test-step-service/test-step.service';
+import { TestStepNode, TestStepNodeType } from '../test-step-service/test-step.service';
 
 export class TestStepTreeNode implements TreeNode {
 
   private _children: TestStepTreeNode[];
   hover: string;
-  expanded = true;
   collapsedCssClasses = 'category fas fa-caret-right';
   expandedCssClasses = 'category fas fa-caret-down';
-  leafCssClasses = 'fas fa-square';
+  leafCssClasses = 'fas fa-cog';
 
   constructor(private testStepTree: TestStepNode) {
     this.hover = `Type: ${firstToUpper(splitCamelCase(this.testStepTree.type))}`;
+    if (testStepTree.children && testStepTree.children.length > 0) {
+      this['expanded'] = true;
+    }
+    if (testStepTree.type === TestStepNodeType.MACRO) {
+      this.leafCssClasses = 'fas fa-cogs';
+    }
   }
 
   get name(): string {
