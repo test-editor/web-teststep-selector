@@ -1,8 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { TestStepSelectorModule } from './modules/test-step-selector/test-step-selector.module';
+import { MessagingModule } from '@testeditor/messaging-service';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ MessagingModule.forRoot(), TestStepSelectorModule.forRoot({testStepServiceUrl: 'http://localhost:8080/index'}) ],
       declarations: [
         AppComponent
       ],
