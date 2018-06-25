@@ -2,6 +2,8 @@ import { Component, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { TestStepService, TestStepNodeType } from '../test-step-service/test-step.service';
 import { TestStepTreeNode, testStepNode2TreeNode } from './test-step-tree-node';
 import { TreeViewerConfig, TreeNode } from '@testeditor/testeditor-commons';
+import { Clipboard } from 'ts-clipboard';
+import { MessagingService } from '@testeditor/messaging-service';
 
 @Component({
   selector: 'app-test-step-selector',
@@ -10,15 +12,31 @@ import { TreeViewerConfig, TreeNode } from '@testeditor/testeditor-commons';
 })
 export class TestStepSelectorComponent implements OnInit {
   model: TreeNode = { name: '<Loading test steps…>', hover: 'Loading test steps…', children: [] };
-  treeConfig: TreeViewerConfig = {  };
+  treeConfig: TreeViewerConfig = {
+    onClick: this.toggleExpanded,
+    onIconClick: this.toggleExpanded,
+    onDoubleClick: (node: TreeNode) => this.copyToClipBoard(node)
+  };
 
-  constructor(private testStepService: TestStepService, private changeDetector: ChangeDetectorRef) { }
+  constructor(private testStepService: TestStepService, private messagingService: MessagingService) { }
 
   updateModel() {
     this.testStepService.getTestSteps().then((testStepTree) => {
       this.model = new TestStepTreeNode(testStepTree);
-      this.changeDetector.detectChanges();
     });
+  }
+
+  private toggleExpanded(node: TreeNode) {
+    if (node.expanded !== undefined) {
+      node.expanded = !node.expanded;
+    }
+  }
+
+  private copyToClipBoard(node: TreeNode) {
+    if (!node.children || node.children.length === 0) {
+      Clipboard.copy(node.name);
+      this.messagingService.publish('snackbar.display.notification', { message: 'copied to clipboard!' });
+    }
   }
 
   ngOnInit() {
