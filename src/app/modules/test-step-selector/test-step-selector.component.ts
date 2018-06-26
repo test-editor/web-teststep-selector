@@ -11,11 +11,13 @@ import { MessagingService } from '@testeditor/messaging-service';
   styleUrls: ['./test-step-selector.component.css']
 })
 export class TestStepSelectorComponent implements OnInit {
+  private readonly teststepPrefix = '- ';
+
   model: TreeNode = { name: '<Loading test steps…>', hover: 'Loading test steps…', children: [] };
   treeConfig: TreeViewerConfig = {
     onClick: this.toggleExpanded,
     onIconClick: this.toggleExpanded,
-    onDoubleClick: (node: TreeNode) => this.copyToClipBoard(node)
+    onDoubleClick: (node: TestStepTreeNode) => this.copyToClipBoard(node)
   };
 
   constructor(private testStepService: TestStepService, private messagingService: MessagingService) { }
@@ -32,9 +34,9 @@ export class TestStepSelectorComponent implements OnInit {
     }
   }
 
-  private copyToClipBoard(node: TreeNode) {
-    if (!node.children || node.children.length === 0) {
-      Clipboard.copy(node.name);
+  private copyToClipBoard(node: TestStepTreeNode) {
+    if (node.type === TestStepNodeType.INTERACTION || node.type === TestStepNodeType.MACRO) {
+      Clipboard.copy(this.teststepPrefix + node.name);
       this.messagingService.publish('snackbar.display.notification', { message: 'copied to clipboard!' });
     }
   }

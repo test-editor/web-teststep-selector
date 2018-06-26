@@ -7,15 +7,18 @@ export class TestStepTreeNode implements TreeNode {
   hover: string;
   collapsedCssClasses = 'category fas fa-caret-right';
   expandedCssClasses = 'category fas fa-caret-down';
-  leafCssClasses = 'fas fa-cog';
+  leafCssClasses: string;
 
   constructor(private testStepTree: TestStepNode) {
     this.hover = `Type: ${firstToUpper(splitCamelCase(this.testStepTree.type))}`;
     if (testStepTree.children && testStepTree.children.length > 0) {
       this['expanded'] = true;
     }
-    if (testStepTree.type === TestStepNodeType.MACRO) {
-      this.leafCssClasses = 'fas fa-cogs';
+    switch (testStepTree.type) {
+      case TestStepNodeType.INTERACTION: this.leafCssClasses = 'fas fa-cog'; break;
+      case TestStepNodeType.MACRO: this.leafCssClasses = 'fas fa-cogs'; break;
+      // other node types are meant as containers; empty ones get styled like a collapsed inner node
+      default: this.leafCssClasses = 'category fas fa-caret-right'; break;
     }
   }
 
@@ -23,10 +26,17 @@ export class TestStepTreeNode implements TreeNode {
     return this.testStepTree.displayName;
   }
 
+  get type(): TestStepNodeType {
+    return this.testStepTree.type;
+  }
+
   get children(): TreeNode[] {
     if (!this._children) {
       if (this.testStepTree.children) {
-        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep));
+        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep))
+          .sort((nodeA, nodeB) => {
+            return nodeA.name.localeCompare(nodeB.name);
+          });
       } else {
         this._children = [];
       }

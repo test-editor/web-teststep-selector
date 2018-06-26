@@ -30,25 +30,9 @@ describe('TestStepTreeNode', () => {
     expect(actualNode.hover).toEqual('Type: Root');
     expect(actualNode.children.length).toEqual(3);
 
-    expect(actualNode.children[0].name).toEqual('org.testeditor');
+    expect(actualNode.children[0].name).toEqual('./.');
     expect(actualNode.children[0].hover).toEqual('Type: Namespace');
-    expect(actualNode.children[0].children.length).toEqual(1);
-
-    expect(actualNode.children[0].children[0].name).toEqual('DummyComponent');
-    expect(actualNode.children[0].children[0].hover).toEqual('Type: Component');
-    expect(actualNode.children[0].children[0].children.length).toEqual(2);
-
-    expect(actualNode.children[0].children[0].children[0].name).toEqual('some interaction');
-    expect(actualNode.children[0].children[0].children[0].hover).toEqual('Type: Interaction');
-    expect(actualNode.children[0].children[0].children[0].children.length).toEqual(0);
-
-    expect(actualNode.children[0].children[0].children[1].name).toEqual('Button');
-    expect(actualNode.children[0].children[0].children[1].hover).toEqual('Type: Element');
-    expect(actualNode.children[0].children[0].children[1].children.length).toEqual(1);
-
-    expect(actualNode.children[0].children[0].children[1].children[0].name).toEqual('click <Button>');
-    expect(actualNode.children[0].children[0].children[1].children[0].hover).toEqual('Type: Interaction');
-    expect(actualNode.children[0].children[0].children[1].children[0].children.length).toEqual(0);
+    expect(actualNode.children[0].children.length).toEqual(0);
 
     expect(actualNode.children[1].name).toEqual('com.example');
     expect(actualNode.children[1].hover).toEqual('Type: Namespace');
@@ -62,8 +46,24 @@ describe('TestStepTreeNode', () => {
     expect(actualNode.children[1].children[0].children[0].hover).toEqual('Type: Macro');
     expect(actualNode.children[1].children[0].children[0].children.length).toEqual(0);
 
-    expect(actualNode.children[2].name).toEqual('./.');
+    expect(actualNode.children[2].name).toEqual('org.testeditor');
     expect(actualNode.children[2].hover).toEqual('Type: Namespace');
-    expect(actualNode.children[2].children.length).toEqual(0);
+    expect(actualNode.children[2].children.length).toEqual(1);
+
+    expect(actualNode.children[2].children[0].name).toEqual('DummyComponent');
+    expect(actualNode.children[2].children[0].hover).toEqual('Type: Component');
+    expect(actualNode.children[2].children[0].children.length).toEqual(2);
+
+    expect(actualNode.children[2].children[0].children[0].name).toEqual('Button');
+    expect(actualNode.children[2].children[0].children[0].hover).toEqual('Type: Element');
+    expect(actualNode.children[2].children[0].children[0].children.length).toEqual(1);
+
+    expect(actualNode.children[2].children[0].children[0].children[0].name).toEqual('click <Button>');
+    expect(actualNode.children[2].children[0].children[0].children[0].hover).toEqual('Type: Interaction');
+    expect(actualNode.children[2].children[0].children[0].children[0].children.length).toEqual(0);
+
+    expect(actualNode.children[2].children[0].children[1].name).toEqual('some interaction');
+    expect(actualNode.children[2].children[0].children[1].hover).toEqual('Type: Interaction');
+    expect(actualNode.children[2].children[0].children[1].children.length).toEqual(0);
   });
 });
