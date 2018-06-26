@@ -11,7 +11,7 @@ import { DebugElement } from '@angular/core';
 
 describe('TestStepSelectorComponent', () => {
 
-  const testStepTree: TestStepNode = { displayName: 'root', type: TestStepNodeType.ROOT, children: [
+  const testStepTree: TestStepNode = { displayName: 'Test Steps', type: TestStepNodeType.ROOT, children: [
     { displayName: 'org.testeditor', type: TestStepNodeType.NAMESPACE, children: [
       { displayName: 'DummyComponent', type: TestStepNodeType.COMPONENT, children: [
         { displayName: 'some interaction', type: TestStepNodeType.INTERACTION, children: [] },
@@ -27,12 +27,12 @@ describe('TestStepSelectorComponent', () => {
         { displayName: 'my first macro "param"', type: TestStepNodeType.MACRO, children: []}
       ]}
     ]},
-    { displayName: './.', type: TestStepNodeType.NAMESPACE, children: null }
+    { displayName: '::', type: TestStepNodeType.NAMESPACE, children: null }
   ]};
 
   const nodeNamesInExpectedOrder = [
-    'root',
-      './.',
+    'Test Steps',
+      '::',
       'com.example',
         'MyMacros',
           'my first macro "param"',
@@ -97,7 +97,7 @@ describe('TestStepSelectorComponent', () => {
 
     // then
     expect(fixture.debugElement.queryAll(By.css('.tree-view-element'))
-      .map((elem) => elem.nativeElement.innerText)).toEqual([ 'root' ]);
+      .map((elem) => elem.nativeElement.innerText)).toEqual([ 'Test Steps' ]);
   }));
 
   it('copies test step prefixed with "- " to clipboard when double-clicking leaf element', fakeAsync(() => {
