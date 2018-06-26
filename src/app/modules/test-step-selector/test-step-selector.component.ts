@@ -17,7 +17,7 @@ export class TestStepSelectorComponent implements OnInit {
   treeConfig: TreeViewerConfig = {
     onClick: this.toggleExpanded,
     onIconClick: this.toggleExpanded,
-    onDoubleClick: (node: TreeNode) => this.copyToClipBoard(node)
+    onDoubleClick: (node: TestStepTreeNode) => this.copyToClipBoard(node)
   };
 
   constructor(private testStepService: TestStepService, private messagingService: MessagingService) { }
@@ -34,8 +34,8 @@ export class TestStepSelectorComponent implements OnInit {
     }
   }
 
-  private copyToClipBoard(node: TreeNode) {
-    if (!node.children || node.children.length === 0) {
+  private copyToClipBoard(node: TestStepTreeNode) {
+    if (node.type === TestStepNodeType.INTERACTION || node.type === TestStepNodeType.MACRO) {
       Clipboard.copy(this.teststepPrefix + node.name);
       this.messagingService.publish('snackbar.display.notification', { message: 'copied to clipboard!' });
     }

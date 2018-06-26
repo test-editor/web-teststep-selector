@@ -23,6 +23,10 @@ export class TestStepTreeNode implements TreeNode {
     return this.testStepTree.displayName;
   }
 
+  get type(): TestStepNodeType {
+    return this.testStepTree.type;
+  }
+
   get children(): TreeNode[] {
     if (!this._children) {
       if (this.testStepTree.children) {
