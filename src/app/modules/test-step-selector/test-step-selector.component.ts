@@ -11,6 +11,8 @@ import { MessagingService } from '@testeditor/messaging-service';
   styleUrls: ['./test-step-selector.component.css']
 })
 export class TestStepSelectorComponent implements OnInit {
+  private readonly teststepPrefix = '- ';
+
   model: TreeNode = { name: '<Loading test steps…>', hover: 'Loading test steps…', children: [] };
   treeConfig: TreeViewerConfig = {
     onClick: this.toggleExpanded,
@@ -34,7 +36,7 @@ export class TestStepSelectorComponent implements OnInit {
 
   private copyToClipBoard(node: TreeNode) {
     if (!node.children || node.children.length === 0) {
-      Clipboard.copy(node.name);
+      Clipboard.copy(this.teststepPrefix + node.name);
       this.messagingService.publish('snackbar.display.notification', { message: 'copied to clipboard!' });
     }
   }

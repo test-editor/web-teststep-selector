@@ -93,7 +93,7 @@ describe('TestStepSelectorComponent', () => {
       .map((elem) => elem.nativeElement.innerText)).toEqual([ 'root' ]);
   }));
 
-  it('copies test step to clipboard when double-clicking leaf element', fakeAsync(() => {
+  it('copies test step prefixed with "- " to clipboard when double-clicking leaf element', fakeAsync(() => {
     // given
     component.updateModel();
     tick();
@@ -106,7 +106,7 @@ describe('TestStepSelectorComponent', () => {
     tick();
 
     // then
-    expect(Clipboard._data).toEqual('some interaction');
+    expect(Clipboard._data).toEqual('- some interaction');
   }));
 
   it('does not copy anything to clipboard when double-clicking inner (non-leaf) element', fakeAsync(() => {
