@@ -26,7 +26,10 @@ export class TestStepTreeNode implements TreeNode {
   get children(): TreeNode[] {
     if (!this._children) {
       if (this.testStepTree.children) {
-        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep));
+        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep))
+          .sort((nodeA, nodeB) => {
+            return nodeA.name.localeCompare(nodeB.name);
+          });
       } else {
         this._children = [];
       }
