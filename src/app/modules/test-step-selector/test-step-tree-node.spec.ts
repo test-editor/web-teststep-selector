@@ -23,8 +23,7 @@ describe('TestStepTreeNode', () => {
     ]};
 
     // when
-    const actualNode = new TestStepTreeNode(testStepTree, null);
-    actualNode.root = actualNode;
+    const actualNode = new TestStepTreeNode(testStepTree);
 
     // then
     expect(actualNode.name).toEqual('root');

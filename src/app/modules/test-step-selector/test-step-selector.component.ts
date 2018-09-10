@@ -24,8 +24,7 @@ export class TestStepSelectorComponent implements OnInit {
 
   updateModel() {
     this.testStepService.getTestSteps().then((testStepTree) => {
-      this.model = new TestStepTreeNode(testStepTree, null);
-      this.model.root = this.model;
+      this.model = new TestStepTreeNode(testStepTree);
     });
   }
 
