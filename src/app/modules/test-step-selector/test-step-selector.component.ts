@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { TestStepService, TestStepNodeType } from '../test-step-service/test-step.service';
 import { TestStepTreeNode, testStepNode2TreeNode } from './test-step-tree-node';
-import { TreeViewerConfig, TreeNode } from '@testeditor/testeditor-commons';
+import { TreeViewerConfig, TreeNode, forEach } from '@testeditor/testeditor-commons';
 import { Clipboard } from 'ts-clipboard';
 import { MessagingService } from '@testeditor/messaging-service';
 
@@ -13,7 +13,7 @@ import { MessagingService } from '@testeditor/messaging-service';
 export class TestStepSelectorComponent implements OnInit {
   private readonly teststepPrefix = '- ';
 
-  model: TreeNode = { name: '<Loading test steps…>', hover: 'Loading test steps…', children: [] };
+  model: TreeNode = { name: '<Loading test steps…>', hover: 'Loading test steps…', root: null, children: [] };
   treeConfig: TreeViewerConfig = {
     onClick: this.toggleExpanded,
     onIconClick: this.toggleExpanded,
@@ -24,7 +24,8 @@ export class TestStepSelectorComponent implements OnInit {
 
   updateModel() {
     this.testStepService.getTestSteps().then((testStepTree) => {
-      this.model = new TestStepTreeNode(testStepTree);
+      this.model = new TestStepTreeNode(testStepTree, null);
+      this.model.root = this.model;
     });
   }
 

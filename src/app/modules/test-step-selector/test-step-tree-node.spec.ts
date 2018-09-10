@@ -23,7 +23,8 @@ describe('TestStepTreeNode', () => {
     ]};
 
     // when
-    const actualNode = new TestStepTreeNode(testStepTree);
+    const actualNode = new TestStepTreeNode(testStepTree, null);
+    actualNode.root = actualNode;
 
     // then
     expect(actualNode.name).toEqual('root');
@@ -32,6 +33,7 @@ describe('TestStepTreeNode', () => {
 
     expect(actualNode.children[0].name).toEqual('./.');
     expect(actualNode.children[0].hover).toEqual('Type: Namespace');
+    expect(actualNode.children[0].root).toEqual(actualNode);
     expect(actualNode.children[0].children.length).toEqual(0);
 
     expect(actualNode.children[1].name).toEqual('com.example');

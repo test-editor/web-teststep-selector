@@ -8,8 +8,9 @@ export class TestStepTreeNode implements TreeNode {
   collapsedCssClasses = 'category fas fa-caret-right';
   expandedCssClasses = 'category fas fa-caret-down';
   leafCssClasses: string;
+  public root: TestStepTreeNode;
 
-  constructor(private testStepTree: TestStepNode) {
+  constructor(private testStepTree: TestStepNode, root: TestStepTreeNode) {
     this.hover = `Type: ${firstToUpper(splitCamelCase(this.testStepTree.type))}`;
     if (testStepTree.children && testStepTree.children.length > 0) {
       this['expanded'] = true;
@@ -20,6 +21,7 @@ export class TestStepTreeNode implements TreeNode {
       // other node types are meant as containers; empty ones get styled like a collapsed inner node
       default: this.leafCssClasses = 'category fas fa-caret-right'; break;
     }
+    this.root = root;
   }
 
   get name(): string {
@@ -33,7 +35,7 @@ export class TestStepTreeNode implements TreeNode {
   get children(): TreeNode[] {
     if (!this._children) {
       if (this.testStepTree.children) {
-        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep))
+        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep, this.root))
           .sort((nodeA, nodeB) => {
             return nodeA.name.localeCompare(nodeB.name);
           });
@@ -51,6 +53,7 @@ export function testStepNode2TreeNode(testStepTree: TestStepNode): TreeNode {
   return {
     name: testStepTree.displayName,
     hover: `Type: ${firstToUpper(splitCamelCase(testStepTree.type))}`,
+    root: null, // initialized later
     children: mapTestStepNodes(testStepTree.children),
     expanded: true
   };
