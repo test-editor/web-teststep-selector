@@ -32,6 +32,7 @@ describe('TestStepTreeNode', () => {
 
     expect(actualNode.children[0].name).toEqual('./.');
     expect(actualNode.children[0].hover).toEqual('Type: Namespace');
+    expect(actualNode.children[0].root).toEqual(actualNode);
     expect(actualNode.children[0].children.length).toEqual(0);
 
     expect(actualNode.children[1].name).toEqual('com.example');
