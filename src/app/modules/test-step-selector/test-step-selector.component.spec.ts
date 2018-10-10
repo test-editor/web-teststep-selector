@@ -96,8 +96,8 @@ describe('TestStepSelectorComponent', () => {
     fixture.detectChanges();
 
     // then
-    expect(fixture.debugElement.queryAll(By.css('.tree-view-element'))
-      .map((elem) => elem.nativeElement.innerText)).toEqual([ 'Test Steps' ]);
+    const hiddenSubtree = fixture.debugElement.query(By.css('.tree-view > .collapsed-subtree'));
+    expect(hiddenSubtree).toBeTruthy();
   }));
 
   it('copies test step prefixed with "- " to clipboard when double-clicking leaf element', fakeAsync(() => {
