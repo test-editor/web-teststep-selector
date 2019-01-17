@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { TestStepService, TestStepNodeType } from '../test-step-service/test-step.service';
 import { TestStepTreeNode, testStepNode2TreeNode } from './test-step-tree-node';
-import { TreeViewerConfig, TreeNode, forEach } from '@testeditor/testeditor-commons';
+import { TreeViewerConfig, TreeNode, forEach, TreeViewerKeyboardConfig, CommonTreeNodeActions } from '@testeditor/testeditor-commons';
 import { Clipboard } from 'ts-clipboard';
 import { MessagingService } from '@testeditor/messaging-service';
 
@@ -13,14 +13,17 @@ import { MessagingService } from '@testeditor/messaging-service';
 export class TestStepSelectorComponent implements OnInit {
   private readonly teststepPrefix = '- ';
 
-  model: TreeNode = { name: '<Loading test steps…>', hover: 'Loading test steps…', root: null, children: [] };
-  treeConfig: TreeViewerConfig = {
+  model = TreeNode.create({ name: '<Loading test steps…>', hover: 'Loading test steps…', children: [] });
+  treeConfig: TreeViewerKeyboardConfig = {
     onClick: this.toggleExpanded,
     onIconClick: this.toggleExpanded,
-    onDoubleClick: (node: TestStepTreeNode) => this.copyToClipBoard(node)
+    onDoubleClick: (node: TestStepTreeNode) => this.copyToClipBoard(node),
+    onKeyPress: this.commonActions.arrowKeyNavigation
   };
 
-  constructor(private testStepService: TestStepService, private messagingService: MessagingService) { }
+  constructor(private testStepService: TestStepService,
+    private messagingService: MessagingService,
+    private commonActions: CommonTreeNodeActions) { }
 
   updateModel() {
     this.testStepService.getTestSteps().then((testStepTree) => {
