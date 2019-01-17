@@ -1,16 +1,16 @@
 import { TreeNode } from '@testeditor/testeditor-commons';
 import { TestStepNode, TestStepNodeType } from '../test-step-service/test-step.service';
 
-export class TestStepTreeNode implements TreeNode {
+export class TestStepTreeNode extends TreeNode {
 
-  private _children: TestStepTreeNode[];
+  private _children: this[];
   hover: string;
   collapsedCssClasses = 'category fas fa-caret-right';
   expandedCssClasses = 'category fas fa-caret-down';
   leafCssClasses: string;
-  root: TestStepTreeNode;
 
-  constructor(private testStepTree: TestStepNode, root?: TestStepTreeNode) {
+  constructor(private testStepTree: TestStepNode, parent: TestStepTreeNode = null) {
+    super();
     this.hover = `Type: ${firstToUpper(splitCamelCase(this.testStepTree.type))}`;
     if (testStepTree.children && testStepTree.children.length > 0) {
       this['expanded'] = true;
@@ -21,11 +21,7 @@ export class TestStepTreeNode implements TreeNode {
       // other node types are meant as containers; empty ones get styled like a collapsed inner node
       default: this.leafCssClasses = 'category fas fa-caret-right'; break;
     }
-    if (root === undefined) {
-      this.root = this;
-    } else {
-      this.root = root;
-    }
+    this.parent = parent as this;
   }
 
   get name(): string {
@@ -36,10 +32,10 @@ export class TestStepTreeNode implements TreeNode {
     return this.testStepTree.type;
   }
 
-  get children(): TreeNode[] {
+  get children(): this[] {
     if (!this._children) {
       if (this.testStepTree.children) {
-        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep, this.root))
+        this._children = this.testStepTree.children.map((testStep) => new TestStepTreeNode(testStep, this) as this)
           .sort((nodeA, nodeB) => {
             return nodeA.name.localeCompare(nodeB.name);
           });
@@ -54,13 +50,12 @@ export class TestStepTreeNode implements TreeNode {
 }
 
 export function testStepNode2TreeNode(testStepTree: TestStepNode): TreeNode {
-  return {
+  return TreeNode.create({
     name: testStepTree.displayName,
     hover: `Type: ${firstToUpper(splitCamelCase(testStepTree.type))}`,
-    root: null, // initialized later
     children: mapTestStepNodes(testStepTree.children),
     expanded: true
-  };
+  });
 }
 
 function mapTestStepNodes(testStepNodes: TestStepNode[]): TreeNode[] {
