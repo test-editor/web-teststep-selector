@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpProviderService } from '../http-provider-service/http-provider.service';
+import { HttpProviderService } from '@testeditor/testeditor-commons';
 import { TestStepServiceConfig } from './test-step-service-config';
 
 export enum TestStepNodeType {
