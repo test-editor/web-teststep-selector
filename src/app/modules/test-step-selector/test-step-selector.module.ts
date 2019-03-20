@@ -4,7 +4,7 @@ import { TreeViewerModule } from '@testeditor/testeditor-commons';
 import { TestStepSelectorComponent } from './test-step-selector.component';
 import { TestStepServiceConfig } from '../test-step-service/test-step-service-config';
 import { DefaultTestStepService, TestStepService } from '../test-step-service/test-step.service';
-import { HttpProviderService } from '../http-provider-service/http-provider.service';
+import { HttpProviderService } from '@testeditor/testeditor-commons';
 
 @NgModule({
   imports: [

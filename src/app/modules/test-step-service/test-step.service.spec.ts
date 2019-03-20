@@ -5,7 +5,7 @@ import { TestStepServiceConfig } from './test-step-service-config';
 import { MessagingService, MessagingModule } from '@testeditor/messaging-service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpProviderService } from '../http-provider-service/http-provider.service';
+import { HttpProviderService } from '@testeditor/testeditor-commons';
 
 describe('TestStepService', () => {
   let serviceConfig: TestStepServiceConfig;
