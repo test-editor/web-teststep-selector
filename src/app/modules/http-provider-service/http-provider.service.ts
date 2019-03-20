@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MessagingService } from '@testeditor/messaging-service';
 import { HTTP_CLIENT_NEEDED, HTTP_CLIENT_SUPPLIED } from '../event-types';
-import { Observable } from 'rxjs';
+import { bindCallback } from 'rxjs';
 
 
 @Injectable()
@@ -12,7 +12,7 @@ export class HttpProviderService {
   private httpClient: HttpClient;
 
   constructor(private messagingService: MessagingService) {
-    const getObservable = Observable.bindCallback(this.retrieveHttpClient, (client: HttpClient) => client);
+    const getObservable = bindCallback(this.retrieveHttpClient, (client: HttpClient) => client);
     this.httpClientPromise = getObservable(this.messagingService).toPromise();
   }
 
