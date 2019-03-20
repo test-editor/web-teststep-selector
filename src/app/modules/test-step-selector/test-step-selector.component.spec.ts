@@ -114,12 +114,12 @@ describe('TestStepSelectorComponent', () => {
     tick();
 
     // then
-    expect(Clipboard._data).toEqual('- some interaction');
+    expect(Clipboard['_data']).toEqual('- some interaction');
   }));
 
   it('does not copy anything to clipboard when double-clicking inner (non-leaf) element', fakeAsync(() => {
     // given
-    Clipboard._data = '';
+    Clipboard['_data'] = '';
     component.updateModel();
     tick();
     fixture.detectChanges();
@@ -131,7 +131,7 @@ describe('TestStepSelectorComponent', () => {
     tick();
 
     // then
-    expect(Clipboard._data).toEqual('');
+    expect(Clipboard['_data']).toEqual('');
   }));
 
   it('sends "copied to clipboard!" message to snackbar via message bus on double-click', fakeAsync(() => {
